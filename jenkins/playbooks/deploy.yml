@@ -1,0 +1,9 @@
+---
+- name: deploy project
+  remote_user: root
+  hosts: all
+  roles:
+    - check_dir
+    - role: remove_project
+      when: project_dir.stdout == 'True' and CLEAR_DIR == 'True'
+    - deploy_project

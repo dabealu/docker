@@ -1,0 +1,13 @@
+version: '2'
+services:
+  jenkins:
+    image: jenkins-ansible
+    restart: always
+    hostname: jenkins
+    volumes:
+      - ./jenkins_home/:/var/jenkins_home/
+    ports:
+      - 8080:8080
+      - 50000:50000
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING=False

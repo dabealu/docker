@@ -1,0 +1,10 @@
+version: '2'
+services:
+  firefox:
+    image: gui-firefox:1
+    environment: 
+      - DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:/home/developer/.Xauthority
+    network_mode: host

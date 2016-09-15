@@ -1,0 +1,13 @@
+version: '2'
+services:
+  consul:
+    image: consul
+    hostname: consul
+    restart: always
+    volumes:
+      - ./consul_data/:/consul/data/
+      - ./consul_config/:/consul/config/
+    ports:
+      - 8500:8500
+      #- 53/udp:8600
+    command: agent -server -bootstrap -data-dir /consul/data -config-dir /consul/config -client 0.0.0.0 -ui

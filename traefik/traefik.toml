@@ -1,0 +1,22 @@
+### global
+logLevel = "ERROR"
+ProvidersThrottleDuration = "3s"
+defaultEntryPoints = ["http"]
+port = ":80"
+
+### entrypoints
+[entryPoints]
+   [entryPoints.http]
+   address = ":80"
+
+### web ui
+[web]
+  address = ":8080"
+  ReadOnly = true
+
+### backend
+[docker]
+  endpoint = "unix:///var/run/docker.sock"
+  domain = "docker.localhost"
+  watch = true
+  

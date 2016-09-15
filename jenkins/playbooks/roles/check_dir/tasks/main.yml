@@ -1,0 +1,5 @@
+---
+- name: check project dir
+  shell: ls /docker/{{ PROJECT_NAME }} >/dev/null 2>&1 && echo 'True' || echo 'False'
+  register: project_dir
+

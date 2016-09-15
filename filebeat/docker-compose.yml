@@ -1,0 +1,12 @@
+version: '2'
+services:
+  filebeat:
+    image: webgears/filebeat
+    restart: always
+    hostname: host-filebeat
+    volumes:
+      - ./conf/filebeat.yml:/etc/filebeat/filebeat.yml
+      - ./filebeat/:/var/lib/filebeat/   # registry file
+      - /var/log/:/var/host_log/
+    extra_hosts:
+      logstash: 127.0.0.1

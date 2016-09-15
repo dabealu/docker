@@ -1,0 +1,9 @@
+version: '2'
+services:
+  lxde:
+    image: ubuntu-vnc
+    environment:
+      - USER=root
+    ports:
+      - 5901:5901
+      - 6080:6080

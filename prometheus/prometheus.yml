@@ -1,0 +1,74 @@
+global:
+  scrape_interval: 1m
+scrape_configs:
+
+  - job_name: 'prometheus'
+    scrape_interval: 1m
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node-exporter'
+    basic_auth:
+      username: 'prom'
+      password: 'password'
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    scrape_interval: 1m
+    file_sd_configs:
+      - files:
+        - /file_sd_configs/*.yml
+        - /file_sd_configs/*.yaml
+        - /file_sd_configs/*.json
+        refresh_interval: 1m
+
+  - job_name: 'cadvisor'
+    basic_auth:
+      username: 'prom'
+      password: 'password'
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    scrape_interval: 5m
+    static_configs:
+      - targets: ['host1', 'host2']
+
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response
+    static_configs:
+      - targets: ['host1', 'host2']  # Target to probe
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: (.*)(:80)?
+        target_label: __param_target
+        replacement: ${1}
+      - source_labels: [__param_target]
+        regex: (.*)
+        target_label: instance
+        replacement: ${1}
+      - source_labels: []
+        regex: .*
+        target_label: __address__
+        replacement: blackbox:9115  # Blackbox exporter
+
+  - job_name: 'blackbox-icmp'
+    metrics_path: /probe
+    params:
+      module: [icmp] 
+    static_configs:
+      - targets: ['host1', 'host2']  # Target to probe
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: (.*)(:80)?
+        target_label: __param_target
+        replacement: ${1}
+      - source_labels: [__param_target]
+        regex: (.*)
+        target_label: instance
+        replacement: ${1}
+      - source_labels: []
+        regex: .*
+        target_label: __address__
+        replacement: blackbox:9115  # Blackbox exporter

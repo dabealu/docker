@@ -1,0 +1,12 @@
+version: '2'
+services:
+  youtrack:
+    restart: always
+    hostname: youtrack
+    image: java:8-jdk
+    ports:
+      - 80:80
+    volumes:
+      - ./app/:/app/
+      - ./run.sh:/run.sh
+    command: /run.sh

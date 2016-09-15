@@ -1,0 +1,21 @@
+version: '2'
+services:
+  unifi:
+    image: unifi:4
+    hostname: unifi
+    restart: always
+    ports:
+      - 8080:8080
+      - 8081:8081
+      - 8443:8443
+      - 8843:8843
+      - 8880:8880
+      - 3478:3478
+    volumes:
+      - ./conf/:/var/lib/unifi/   #configuration data
+      - ./log_unifi/:/var/log/unifi/   #unifi log files
+      - ./log_mongo/:/var/log/mongodb/   #mongodb log files
+      - ./run/:/var/run/unifi/   #run Information
+      #- ./work/:/usr/lib/unifi/work/
+    environment:
+      - TZ=Europe/Moscow

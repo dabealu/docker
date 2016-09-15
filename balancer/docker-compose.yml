@@ -1,0 +1,45 @@
+version: '2'
+services:
+  consul:
+    image: consul
+    restart: always
+    hostname: consul
+    volumes:
+      - ./consul/:/tmp/consul/
+      - ./conf/consul.d/:/etc/consul.d/
+    ports:
+      - 127.0.0.1:8300:8300
+      - 127.0.0.1:8301:8301
+      - 127.0.0.1:8302:8302
+      - 127.0.0.1:8400:8400
+      - 127.0.0.1:8500:8500
+      - 127.0.0.1:53:8600/udp
+      #dns port, can be "53:8600/udp" to listen standart dns port on host ip
+
+  registrator:
+    image: gliderlabs/registrator:latest
+    restart: always
+    hostname: registrator
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: consul://consul:8500
+
+  balancer:
+  #supervisor with nginx and consul-template
+    image: balancer
+    restart: always
+    hostname: balancer
+    depends_on:
+      - consul
+      - registrator
+    volumes:
+      - ./conf/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+      - ./conf/nginx.conf.d/:/etc/nginx/conf.d/
+      - ./conf/consul-template/:/etc/consul-template/
+      - ./log/:/var/log/balancer/
+    ports:
+      - 80:80
+      - 443:443
+      - 8599:8599
+    network_mode: host
+

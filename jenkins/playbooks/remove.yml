@@ -1,0 +1,6 @@
+---
+- name: remove project
+  hosts: all
+  remote_user: root
+  roles:
+    - remove_project

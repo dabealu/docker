@@ -1,0 +1,16 @@
+version: '2'
+services:
+  samba:
+    image: samba
+    restart: always
+    hostname: samba
+    volumes:
+      - ./share/:/share/
+      - ./smb.conf:/etc/samba/smb.conf
+    ports:
+      - 137:137
+      - 138:138
+      - 139:139
+      - 445:445
+    network_mode: host
+#use host network for visibility in WORKGROUP

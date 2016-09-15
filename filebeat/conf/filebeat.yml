@@ -1,0 +1,17 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /var/host_log/*.log
+      document_type: log
+  registry_file: /var/lib/filebeat/registry
+output:
+  logstash:
+    hosts: ["logstash:5044"]
+shipper:
+logging:
+  to_syslog: false
+  to_stderr: true
+  to_files: false
+  files:
+

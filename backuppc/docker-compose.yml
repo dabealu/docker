@@ -1,0 +1,16 @@
+version: '2'
+services:
+  backuppc:
+    image: webgears/backuppc
+    hostname: backuppc
+    restart: always
+    ports:
+      - 80
+    volumes:
+       - backuppc/:/var/lib/backuppc/
+    environment:
+      - SERVICE_80_NAME=nginx-80
+      - SERVICE_TAGS=backuppc
+volumes:
+  backuppc:
+    driver: local

@@ -1,0 +1,22 @@
+#docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
+version: '2'
+services:
+  ui:
+    image: uifd/ui-for-docker
+    restart: always
+    hostname: ui-for-docker
+    privileged: true
+    expose:
+      - 9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  nginx:
+    hostname: dockerui-nginx
+    image: nginx
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs/:/etc/nginx/certs/
+      - ./htpasswd:/etc/nginx/htpasswd
+    ports:
+      - 9000:9000

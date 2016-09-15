@@ -1,0 +1,10 @@
+version: '2'
+services:
+  ftp:
+    image: proftpd
+    restart: always
+    hostname: proftpd
+    volumes:
+      - ./ftpd.passwd:/etc/proftpd/ftpd.passwd
+      - /docker/samba/share/:/var/ftp/ 
+    network_mode: host

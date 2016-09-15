@@ -1,0 +1,7 @@
+---
+- name: stop and delete containers of {{ PROJECT_NAME }}
+  docker_service: project_src=/docker/{{ PROJECT_NAME }} state=absent
+
+- name: remove project {{ PROJECT_NAME }} files
+  file: path=/docker/{{ PROJECT_NAME }} state=absent
+

@@ -1,0 +1,12 @@
+#docker run -d -p 9115:9115 --name blackbox_exporter -v `pwd`:/config blackbox_exporter -config.file=/config/blackbox.yml
+version: '2'
+services:
+  blackbox:
+    image: prom/blackbox-exporter
+    restart: always
+    hostname: blackbox
+    ports:
+      - 9115:9115
+    volumes:
+      - ./config/:/config/
+    command: -config.file=/config/blackbox.yml

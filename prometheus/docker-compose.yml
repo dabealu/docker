@@ -1,0 +1,52 @@
+version: '2'
+services:
+
+  #docker run -d -p 9090:9090 -v ~/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus -config.file=/etc/prometheus/prometheus.yml -storage.local.path=/prometheus
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    hostname: prometheus
+    expose:
+      - 9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./file_sd_configs/:/file_sd_configs/
+      - ./prometheus/:/prometheus/
+    command: -config.file=/etc/prometheus/prometheus.yml -storage.local.path=/prometheus
+
+  grafana:
+    hostname: grafana
+    image: grafana/grafana:master
+    restart: always
+    expose:
+      - 3000
+    volumes:
+      - ./grafana/:/var/lib/grafana/   #sqlite3 db
+    environment:
+    #all config can be overridden using variables
+      - GF_SECURITY_ADMIN_USER=grafana
+      - GF_SECURITY_ADMIN_PASSWORD=password
+
+  consul:
+    image: consul
+    hostname: consul
+    restart: always
+    volumes:
+      - ./consul_data/:/consul/data/
+      - ./consul_config/:/consul/config/
+    expose:
+      - 8500
+    command: agent -server -bootstrap -data-dir /consul/data -config-dir /consul/config -client 0.0.0.0 -ui
+
+  nginx:
+    hostname: prom-nginx
+    image: nginx
+    restart: always
+    ports:
+      - 9090:9090   #prometheus
+      - 3000:3000   #grafana
+      - 8500:8500   #consul
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs/:/etc/nginx/certs/
+      - ./htpasswd:/etc/nginx/htpasswd

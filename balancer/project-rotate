@@ -1,0 +1,6 @@
+/var/log/balancer/* {
+  rotate 1
+  size 20M
+  missingok
+  notifempty
+}

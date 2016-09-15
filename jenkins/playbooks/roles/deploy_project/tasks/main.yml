@@ -1,0 +1,12 @@
+---
+- name: clone project repo to /docker/{{ PROJECT_NAME }}
+  git: clone=yes dest=/docker/{{ PROJECT_NAME }} repo={{ PROJECT_REPO }}
+
+- name: set postgres password in docker-compose.yml
+  replace: dest=/docker/{{ PROJECT_NAME }}/docker-compose.yml regexp='- POSTGRES_PASSWORD=.*' replace='- POSTGRES_PASSWORD={{ POSTGRES_PASSWORD }}' 
+
+- name: start {{ PROJECT_NAME }} containers
+  docker_service: project_src=/docker/{{ PROJECT_NAME }} state=present
+
+- name: check project containers status 
+  script: ./compose_cts_state.py  /docker/{{ PROJECT_NAME }}

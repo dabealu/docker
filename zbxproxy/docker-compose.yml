@@ -1,0 +1,27 @@
+# after starting container there may be a permission problems in mounted dirs, so chown it to right owner
+# also if you use a new databse, you must import schema.sql:
+# cp /usr/share/doc/zabbix-proxy-pgsql/schema.sql.gz /tmp; cd /tmp; gzip -d schema.sql.gz; su - postgres
+# psql postgres < /tmp/schema.sql
+
+version: '2'
+services:
+  proxy:
+    image: zabbix-proxy
+    ipc: host
+    restart: always
+    hostname: zabbix-proxy
+    ports:
+      - "10051:10051"
+      - "22000:22"
+    volumes:
+      - ./root/:/root/
+      - ./conf/zabbix_proxy.conf:/etc/zabbix/zabbix_proxy.conf
+      - ./pgdata/:/var/lib/postgresql/data/pgdata/
+      - ./log/:/var/log/zabbix/
+    environment:
+      - SERVICE_22_NAME=ssh
+      - SERVICE_TAGS=zabbix-proxy
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata

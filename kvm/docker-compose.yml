@@ -1,0 +1,18 @@
+version: '2'
+services:
+  kvm:
+    image: kvm
+    restart: always
+    privileged: true
+    network_mode: host
+    volumes:
+      - /virt_machines:/virt_machines
+    environment:
+      - VM_NAME= #name of virtual machine
+      - VM_HDSIZE= #virtual HDD size (GB)
+      - VM_MEMORY= #VM memory (MB)
+      - VM_CORES= #VM CPU cores
+      - SPICE_PORT= #spice console port number
+      - SPICE_PASSWD= #spice console password
+      - VM_CDROM= #path to ISO image attached to VM cdrom (not required)
+ #all variables are REQUIRED except VM_CDROM (and VM_HDSIZE will be ignored if image already exist)

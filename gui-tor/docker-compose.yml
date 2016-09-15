@@ -1,0 +1,12 @@
+# sudo docker run -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/snd:/dev/snd -v $HOME/.Xauthority:/home/user/.Xauthority -e DISPLAY=unix$DISPLAY --net=host jess/tor-browser
+version: '2'
+services:
+  browser:
+    image: gui-tor:1
+    environment:
+      - DISPLAY=unix$DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/snd:/dev/snd
+      - $HOME/.Xauthority:/home/user/.Xauthority
+    network_mode: host

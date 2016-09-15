@@ -1,0 +1,25 @@
+version: '2'
+services:
+
+  #docker run -d -v "/proc:/host/proc" -v "/sys:/host/sys" -v "/:/rootfs" --net="host" prom/node-exporter -collector.procfs /host/proc -collector.sysfs /host/proc -collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
+  node-exporter:
+    image: prom/node-exporter
+    hostname: node-exporter
+    restart: always
+    volumes:
+      - /proc:/host/proc
+      - /sys:/host/sys
+      - /:/rootfs
+    network_mode: host
+    command: -web.listen-address 127.0.0.1:9199 -collector.procfs /host/proc -collector.sysfs /host/proc -collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($$|/)"
+
+  nginx:
+    hostname: prom-nginx
+    image: nginx
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs/:/etc/nginx/certs/
+      - ./htpasswd:/etc/nginx/htpasswd
+    network_mode: host
+

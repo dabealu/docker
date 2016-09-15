@@ -1,0 +1,50 @@
+#influxdata components of TICK stack/Grafana monitoring
+
+version: '2'
+services:
+
+  influxdb:
+    hostname: influxdb
+    image: webgears/influxdb
+    restart: always
+    volumes:
+      - ./influxdb/:/var/lib/influxdb/data/
+    ports:
+      - 8083:8083   #web GUI
+      - 8086:8086   #API
+
+  telegraf:
+    hostname: telegraf
+    image: webgears/telegraf
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./conf/telegraf.conf:/etc/telegraf/telegraf.conf
+    
+  grafana:
+    hostname: grafana
+    image: grafana/grafana:master
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/:/var/lib/grafana/   #sqlite3 db
+    environment:   
+    #all config can be overridden using variables
+      - GF_SECURITY_ADMIN_USER=grafana
+      - GF_SECURITY_ADMIN_PASSWORD=password
+
+#  kapacitor:
+#    hostname: kapacitor
+#    image: webgears/kapacitor
+#    restart: always
+#    expose:
+#      - 9092
+#    volumes:
+#      - ./kapacitor/:/var/lib/kapacitor/
+#      - ./conf/kapacitor.conf:/etc/kapacitor/kapacitor.conf
+#      - ./conf/kapacitor_tick/:/etc/kapacitor/tick/
+
+
+
+    

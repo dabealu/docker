@@ -1,0 +1,19 @@
+version: '2'
+services:
+  consul:
+    image: consul
+    hostname: consul
+    restart: always
+    volumes:
+      # .json config files
+      - ./config/:/consul/config/
+      - ./data/:/consul/data/
+    ports:
+      - 127.0.0.1:8300:8300
+      - 127.0.0.1:8301:8301
+      - 127.0.0.1:8302:8302
+      - 127.0.0.1:8400:8400
+      - 127.0.0.1:8500:8500
+      - 127.0.0.1:53:8600/udp
+      #dns port, can be "53:8600/udp" to listen standart dns port on host ip
+    command: agent -server -bootstrap -config-dir /consul/config -data-dir /consul/data -client 0.0.0.0 -ui

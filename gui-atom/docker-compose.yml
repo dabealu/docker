@@ -1,0 +1,13 @@
+version: '2'
+services:
+  atom:
+    image: atom
+    hostname: atom
+    restart: always
+    environment:
+      - DISPLAY=unix$DISPLAY
+    volumes:
+      - /:/host/
+      - /tmp/.X11-unix/:/tmp/.X11-unix/
+      - $HOME/.Xauthority:/root/.Xauthority
+    network_mode: host

@@ -24,6 +24,6 @@ RUN	apt-get update &&\
 	wget -q https://github.com/atom/atom/releases/download/v1.10.2/atom-amd64.deb &&\
 	dpkg -i atom-amd64.deb &&\
 	rm -f atom-amd64.deb &&\
-	apm install script
+	apm install platformio-ide-terminal script linter language-docker
 
 CMD	["/usr/bin/atom","-f"]

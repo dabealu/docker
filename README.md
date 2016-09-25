@@ -1,8 +1,8 @@
-### Docker containers files ###  
+### Docker containers files  
 Different Dockerfiles and docker-compose files for containerized services.  
 
 
-#### note for gui apps: ####  
+#### note for gui apps:  
 -v /tmp/.X11-unix:/tmp/.X11-unix \ # mount the X11 socket  
 -e DISPLAY=unix$DISPLAY \ # pass the display  
 --device /dev/snd \ # so we have sound  

@@ -1,4 +1,4 @@
-FROM	nginx:1.11.1
+FROM	nginx:1.11
 
 RUN	apt-get update &&\
 	apt-get install wget supervisor -y &&\

@@ -1,30 +1,34 @@
 #https://github.com/coreos/etcd/tree/release-2.3
 version: '2'
 services:
+
   etcd:
-    image: quay.io/coreos/etcd:v2.3.6
+    image: quay.io/coreos/etcd:v3.0.15
     hostname: etcd
     restart: always
     expose:
       - 2379 #client api
       - 2380 #cluster communication
     ports:
-      - 127.0.0.1:2379:2379
+      - 2379:2379
     environment:
       - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
       - ETCD_ADVERTISE_CLIENT_URLS=http://localhost:2379,http://etcd:2379
+
   browser:
     image: etcd-browser
+    build: ./etcd-browser
     hostname: etcd-browser
     restart: always
     ports:
       - 8000:8000
     environment:
       - AUTH_USER=admin
-      - AUTH_PASS=${ETCD_BROWSER_PASSWD}
+      - AUTH_PASS=1
       - ETCD_HOST=etcd
       - ETCD_PORT=2379
       - SERVER_PORT=8000
+
   registrator:
     image: gliderlabs/registrator
     hostname: registrator
@@ -32,8 +36,10 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     command: -internal -resync 60 etcd://etcd:2379/balancer
+
   nginx:
-    image: nginx-confd
+    image: nginx-confd:1.11
+    build: ./nginx-confd
     restart: always
     volumes:
       - ./confd/:/etc/confd/

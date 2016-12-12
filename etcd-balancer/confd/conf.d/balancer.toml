@@ -1,5 +1,5 @@
 [template]
-prefix = "/balancer"
+prefix = "/"
 src = "nginx.tmpl"
 dest = "/etc/nginx/nginx.conf"
 owner = "nginx"
@@ -9,3 +9,4 @@ keys = [
 ]
 check_cmd = "/usr/sbin/nginx -t -c {{.src}}"
 reload_cmd = "/usr/sbin/nginx -s reload"
+

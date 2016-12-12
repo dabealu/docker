@@ -13,29 +13,22 @@ services:
       - 2379:2379
     environment:
       - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
-      - ETCD_ADVERTISE_CLIENT_URLS=http://localhost:2379,http://etcd:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://192.168.0.115:2379,http://etcd:2379
 
-  browser:
-    image: etcd-browser
-    build: ./etcd-browser
-    hostname: etcd-browser
+  viewer:
+    image: nikfoundas/etcd-viewer
+    hostname: etcd-viewer
     restart: always
     ports:
-      - 8000:8000
-    environment:
-      - AUTH_USER=admin
-      - AUTH_PASS=1
-      - ETCD_HOST=etcd
-      - ETCD_PORT=2379
-      - SERVER_PORT=8000
+      - 8080:8080
 
   registrator:
     image: gliderlabs/registrator
-    hostname: registrator
     restart: always
+    hostname: registrator
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
-    command: -internal -resync 60 etcd://etcd:2379/balancer
+    command: -retry-attempts -1 -ip 192.168.0.115 -resync 10 etcd://192.168.0.115:2379 # -ip - which ip will be registered for all services
 
   nginx:
     image: nginx-confd:1.11
@@ -45,3 +38,4 @@ services:
       - ./confd/:/etc/confd/
       - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
     network_mode: host
+

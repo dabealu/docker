@@ -1,4 +1,3 @@
-#https://github.com/coreos/etcd/tree/release-2.3
 version: '2'
 services:
 
@@ -28,7 +27,7 @@ services:
     hostname: registrator
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
-    command: -retry-attempts -1 -ip 192.168.0.115 -resync 10 etcd://192.168.0.115:2379 # -ip - which ip will be registered for all services
+    command: -retry-attempts -1 -retry-interval 10000 -ip 192.168.0.115 -resync 10 etcd://192.168.0.115:2379 # -ip - which ip will be registered for all services
 
   nginx:
     image: nginx-confd:1.11

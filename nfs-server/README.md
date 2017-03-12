@@ -27,9 +27,9 @@ To mount NFS share inside another container, that container must have capability
 
 Some of server parameters can be changed via environments variables:  
 `SHARED_PATH` - path to exported directory (default: /export)  
-`TRUSTED_NET` - network (or host) from which to allow connections to the server, i.e. trusted network: 10.1.0.0/16 (default is any: *, which is **insecure** !),   
+`TRUSTED_NET` - network (or host) from which to allow connections to the server, i.e. trusted network: 10.1.0.0/16 (default is any: \*, which is **insecure** !),   
 `EXPORT_OPTS` - export parameters (default: rw,sync,no_subtree_check,nohide,no_root_squash,fsid=0,insecure)  
-  
+
 In case when NFS server went offline unexpectedly you may want to unmount hanged mounts:
 ```
 umount -lf /path/to/nfs-mount

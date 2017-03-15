@@ -13,7 +13,7 @@ docker run -d --privileged --name nfs-server -p 2049:2049 -v /path/to/hostdir:/e
 Mount NFS share on client:  
 ```
 apt-get install nfs-common -y
-mkdir mounted-nfs
+mkdir /mnt/mounted-nfs
 mount -t nfs -o soft,bg <nfs-server-ip>:/ /mnt/mounted-nfs
 ```
   

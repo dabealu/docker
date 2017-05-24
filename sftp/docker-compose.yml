@@ -1,0 +1,18 @@
+version: '2'
+services:
+  ftp:
+    image: sftp
+    build: .
+    restart: always
+    environment:
+      - SFTP_UID=33
+      - SFTP_GID=33
+      - SFTP_HOME=/var/apps
+      - SFTP_USER=www-data
+      - SFTP_PASSWORD=mysecretpassword
+    volumes:
+      - ./sftp_config:/etc/ssh/sftp_config
+      - ./www-data/:/var/apps/  # set correct rights for SFTP_UID/GID
+    ports:
+      - "2022:22"
+

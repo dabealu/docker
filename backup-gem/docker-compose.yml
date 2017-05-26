@@ -1,0 +1,12 @@
+version: '2'
+services:
+
+  backup:
+    image: backup:4.3.0
+    build: .
+    network_mode: host
+    restart: always
+    volumes:
+      - ./crontab:/etc/crontab
+      - ./models/:/root/Backup/models/
+
